@@ -47,18 +47,18 @@ fn main() {
 }
 
 struct Triangle {
-    a: i32,
-    b: i32,
-    c: i32,
+    a: u32,
+    b: u32,
+    c: u32,
 }
 
 impl Triangle {
     fn from_array(sides: [i32; 3]) -> Result<Triangle, String> {
         if Triangle::is_valid_triangle(sides) {
             Ok(Triangle {
-                a: sides[0],
-                b: sides[1],
-                c: sides[2],
+                a: sides[0] as u32,
+                b: sides[1] as u32,
+                c: sides[2] as u32,
             })
         } else {
             Err(String::from("Numbers cannot make a triangle."))
@@ -76,7 +76,8 @@ impl Triangle {
     }
 
     fn is_valid_triangle(sides: [i32; 3]) -> bool {
-        sides[0] + sides[1] > sides[2]
+        sides[0] >= 1 && sides[1] >= 1 && sides[2] >= 1
+            && sides[0] + sides[1] > sides[2]
             && sides[1] + sides[2] > sides[0]
             && sides[2] + sides[0] > sides[1]
     }
@@ -93,11 +94,11 @@ impl Triangle {
         s.sqrt()
     }
 
-    fn sum_sides(&self) -> i32 {
+    fn sum_sides(&self) -> u32 {
         self.a + self.b + self.c
     }
 
-    fn triangle_circumference(&self) -> i32 {
+    fn triangle_circumference(&self) -> u32 {
         self.sum_sides()
     }
 }
