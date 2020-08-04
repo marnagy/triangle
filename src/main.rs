@@ -21,7 +21,7 @@ fn main() {
 
     let trngl = match Triangle::from_array(sides) {
         Ok(triangle) => triangle,
-        Err(error) => panic!(error.kind()),
+        Err(reason) => panic!(reason),
     };
 
     println!("Obvod trojuholnika ja {0}", trngl.triangle_circumference());
@@ -53,6 +53,18 @@ struct Triangle {
 }
 
 impl Triangle {
+    fn from_array(sides: [i32; 3]) -> Result<Triangle, String> {
+        if Triangle::is_valid_triangle(sides) {
+            Ok(Triangle {
+                a: sides[0],
+                b: sides[1],
+                c: sides[2],
+            })
+        } else {
+            Err(String::from("Numbers cannot make a triangle."))
+        }
+    }
+
     fn is_equilateral(&self) -> bool {
         self.a == self.b && self.b == self.c
     }
@@ -61,21 +73,6 @@ impl Triangle {
         (self.a == self.b && self.c != self.a)
             || (self.b == self.c && self.a != self.b)
             || (self.c == self.a && self.b != self.c)
-    }
-
-    fn from_array(sides: [i32; 3]) -> Result<Triangle, io::Error> {
-        if Triangle::is_valid_triangle(sides) {
-            Ok(Triangle {
-                a: sides[0],
-                b: sides[1],
-                c: sides[0],
-            })
-        } else {
-            Err(io::Error::new(
-                io::ErrorKind::InvalidInput,
-                "Numbers don't ",
-            ))
-        }
     }
 
     fn is_valid_triangle(sides: [i32; 3]) -> bool {
